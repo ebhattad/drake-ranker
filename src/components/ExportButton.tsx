@@ -145,8 +145,8 @@ export function ExportButton({ onExport, onShare, onReset, rankedItems, mode, vi
                       {copied === 'url' ? <Check size={15} className="text-amber" /> : <Link2 size={15} />}
                     </span>
                     <div className="min-w-0">
-                      <div className="font-semibold text-frost">{copied === 'url' ? 'Copied!' : 'Copy share link'}</div>
-                      <div className="text-[10px] text-[rgb(var(--theme-muted))]">Let others see your ranking</div>
+                      <div className="font-semibold text-frost">{copied === 'url' ? 'Copied!' : 'Copy app link'}</div>
+                      <div className="text-[10px] text-[rgb(var(--theme-muted))]">Clean link — rankings stay local</div>
                     </div>
                   </button>
 

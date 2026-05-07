@@ -60,20 +60,6 @@ const defaultState: RankingState = {
   },
 }
 
-function encodeState(state: RankingState) {
-  return btoa(encodeURIComponent(JSON.stringify(state)))
-}
-
-function decodeState(value: string): RankingState | null {
-  try {
-    const parsed = JSON.parse(decodeURIComponent(atob(value))) as RankingState
-    if (!parsed?.albumOrder || !parsed?.songOrder || !parsed?.albumTiers || !parsed?.songTiers) return null
-    return parsed
-  } catch {
-    return null
-  }
-}
-
 function normalizeState(candidate: RankingState): RankingState {
   const albumIds = new Set(albums.map((album) => album.id))
   const songIds = new Set(songs.map((song) => song.id))
@@ -101,6 +87,35 @@ function normalizeState(candidate: RankingState): RankingState {
     albumTiers: normalizeTiers(candidate.albumTiers, albumIds, albums.map((album) => album.id)),
     songTiers: normalizeTiers(candidate.songTiers, songIds, songs.map((song) => song.id)),
   }
+}
+
+function isRankingState(candidate: unknown): candidate is RankingState {
+  return (
+    Boolean(candidate) &&
+    typeof candidate === 'object' &&
+    Array.isArray((candidate as RankingState).albumOrder) &&
+    Array.isArray((candidate as RankingState).songOrder) &&
+    Boolean((candidate as RankingState).albumTiers) &&
+    Boolean((candidate as RankingState).songTiers)
+  )
+}
+
+function parseStoredState(value: string): RankingState | null {
+  try {
+    const parsed = JSON.parse(value)
+    if (isRankingState(parsed)) return parsed
+  } catch {
+    // Keep supporting older localStorage entries that were base64 encoded.
+  }
+
+  try {
+    const parsed = JSON.parse(decodeURIComponent(atob(value)))
+    if (isRankingState(parsed)) return parsed
+  } catch {
+    return null
+  }
+
+  return null
 }
 
 function insertVisible(list: string[], visibleSet: Set<string>, itemId: string, targetIndex: number) {
@@ -133,10 +148,9 @@ function App() {
   const [view, setView] = useState<ViewMode>('list')
   const [songFilter, setSongFilter] = useState<string>('all')
   const [rankingState, setRankingState] = useState<RankingState>(() => {
-    const fromHash = window.location.hash ? decodeState(window.location.hash.slice(1)) : null
     const fromStorage = window.localStorage.getItem(STORAGE_KEY)
-    const parsedStorage = fromStorage ? decodeState(fromStorage) : null
-    return normalizeState(fromHash ?? parsedStorage ?? defaultState)
+    const parsedStorage = fromStorage ? parseStoredState(fromStorage) : null
+    return normalizeState(parsedStorage ?? defaultState)
   })
   const [feedback, setFeedback] = useState<string>('')
   const [activeItemId, setActiveItemId] = useState<string | null>(null)
@@ -192,10 +206,13 @@ function App() {
 
   useEffect(() => {
     const normalized = normalizeState(rankingState)
-    const encoded = encodeState(normalized)
-    window.localStorage.setItem(STORAGE_KEY, encoded)
-    window.history.replaceState(null, '', `#${encoded}`)
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized))
   }, [rankingState])
+
+  useEffect(() => {
+    if (!window.location.hash) return
+    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
+  }, [])
 
   useEffect(() => {
     if (!feedback) return
@@ -227,10 +244,10 @@ function App() {
   }
 
   async function handleShare() {
-    const url = window.location.href
+    const url = `${window.location.origin}${window.location.pathname}${window.location.search}`
     try {
       await navigator.clipboard.writeText(url)
-      setFeedback('Share URL copied.')
+      setFeedback('App link copied.')
     } catch {
       setFeedback('Copy failed.')
     }
