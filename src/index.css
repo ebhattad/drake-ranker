@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --theme-bg: 5 5 7;
+  --theme-panel: 14 14 18;
+  --theme-panel-strong: 22 22 28;
+  --theme-text: 244 244 246;
+  --theme-muted: 153 153 153;
+  --theme-accent: 200 146 74;
+  font-family: 'Geist', sans-serif;
+  color: rgb(var(--theme-text));
+  background: rgb(var(--theme-bg));
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: rgb(var(--theme-text));
+  background:
+    radial-gradient(ellipse 90% 35% at 50% 0%, rgb(var(--theme-accent) / 0.06) 0%, transparent 100%),
+    radial-gradient(ellipse 55% 45% at 0% 100%, rgb(255 255 255 / 0.04) 0%, transparent 100%),
+    rgb(var(--theme-bg));
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+select {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--theme-accent) / 0.35);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.vault-card,
+.frost-card {
+  backdrop-filter: blur(14px);
+  background: rgb(var(--theme-panel) / 0.92);
+}
+
+@keyframes frost-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

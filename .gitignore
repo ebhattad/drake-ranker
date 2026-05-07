@@ -1,0 +1,46 @@
+node_modules/
+
+# Build output
+dist/
+build/
+.vite/
+
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+!.env.local.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test and coverage output
+coverage/
+*.lcov
+
+# Vercel
+.vercel/
+
+# Local Azure/Azurite emulator state
+AzuriteConfig
+__azurite_db_*.json
+__blobstorage__/
+__queuestorage__/
+__tablestorage__/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.idea/
+.vscode/
+
+# Temporary files
+*.tmp
+*.temp
