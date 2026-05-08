@@ -58,15 +58,15 @@ function BankItem<T extends { id: string }>({
   }, [container, index, item.id, mode, view])
 
   return (
-    <div ref={itemRef} className={dragging ? 'opacity-60' : ''}>
+    <div ref={itemRef} className={`dnd-draggable ${dragging ? 'opacity-60' : ''}`}>
       <div className="relative">
         <button
           type="button"
           ref={handleRef}
           aria-label={`Drag ${getItemLabel(item)}`}
-          className="absolute right-2 top-2 z-10 flex h-11 w-11 touch-none items-center justify-center rounded-none bg-card/75 text-ice/65 shadow-[0_10px_24px_rgba(0,0,0,0.22)] transition hover:text-frost"
+          className="absolute right-2 top-2 z-10 flex h-11 w-11 select-none items-center justify-center rounded-none bg-card/75 text-ice/65 shadow-[0_10px_24px_rgba(0,0,0,0.22)] transition hover:text-frost"
         >
-          <GripVertical size={14} />
+          <GripVertical size={16} />
         </button>
         {renderItem(item, true, dragging)}
       </div>
