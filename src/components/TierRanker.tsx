@@ -149,14 +149,14 @@ function DraggableTile<T extends { id: string }>({
   }, [index, item.id, mode, tierId])
 
   return (
-    <div ref={tileRef} className={`relative w-full touch-none sm:w-[calc(50%-0.375rem)] xl:w-[calc(33.333%-0.5rem)] ${dragging ? 'opacity-60' : ''}`}>
+    <div ref={tileRef} className={`dnd-draggable relative w-full sm:w-[calc(50%-0.375rem)] xl:w-[calc(33.333%-0.5rem)] ${dragging ? 'opacity-60' : ''}`}>
       <button
         ref={handleRef}
         type="button"
         aria-label={`Drag ${getItemLabel(item)}`}
-        className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-none bg-obsidian/55 text-ice/65 shadow-[0_10px_24px_rgba(0,0,0,0.22)]"
+        className="absolute right-2 top-2 z-10 flex h-11 w-11 select-none items-center justify-center rounded-none bg-obsidian/55 text-ice/65 shadow-[0_10px_24px_rgba(0,0,0,0.22)]"
       >
-        <GripVertical size={16} />
+        <GripVertical size={18} />
       </button>
       {renderItem(item, undefined, true, dragging)}
     </div>

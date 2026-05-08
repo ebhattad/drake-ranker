@@ -75,13 +75,13 @@ function SortableRow<T extends { id: string }>({
   }, [index, item.id, mode])
 
   return (
-    <div ref={rowRef} className={dragging ? 'z-20 opacity-70' : ''}>
+    <div ref={rowRef} className={`dnd-draggable ${dragging ? 'z-20 opacity-70' : ''}`}>
       <div className="relative">
         <button
           ref={handleRef}
           type="button"
           aria-label={`Drag ${getItemLabel(item)}`}
-          className="absolute right-3 top-3 z-10 flex h-10 w-10 touch-none items-center justify-center rounded-none bg-card/75 text-ice/65 shadow-[0_10px_24px_rgba(0,0,0,0.22)] transition hover:text-frost"
+          className="absolute right-2 top-2 z-10 flex h-11 w-11 select-none items-center justify-center rounded-none bg-card/75 text-ice/65 shadow-[0_10px_24px_rgba(0,0,0,0.22)] transition hover:text-frost"
         >
           <GripVertical size={18} />
         </button>

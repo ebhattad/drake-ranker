@@ -49,6 +49,37 @@ body::before {
   box-sizing: border-box;
 }
 
+/*
+ * Touch / mobile drag-and-drop accessibility.
+ *
+ * The ranker uses native HTML5 drag-and-drop (via @atlaskit/pragmatic-drag-and-drop).
+ * On touch devices the browser's default long-press behaviour kicks in (text
+ * selection, callout menu, image save), which makes dragging cards into tier /
+ * list boxes feel "glitchy" — the user perceives that the page is trying to
+ * highlight text instead of moving the card. The class below disables those
+ * default touch gestures on the draggable surface so the drag adapter can take
+ * over cleanly.
+ */
+.dnd-draggable {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-drag: element;
+}
+
+.dnd-draggable img {
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* Prevent pull-to-refresh / over-scroll bounce from interrupting a drag. */
+html,
+body {
+  overscroll-behavior-y: contain;
+}
+
 button,
 select {
   font: inherit;
